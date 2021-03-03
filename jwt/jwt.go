@@ -39,6 +39,7 @@ func ExtractToken(r *http.Request) string {
 }
 
 func VerifyToken(r *http.Request) (*jwt.Token, error) {
+	os.Setenv("ACCESS_SECRET", "GOCOMMUNITY_TEST")
 	tokenString := ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		//Make sure that the token method conform to "SigningMethodHMAC"
