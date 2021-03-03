@@ -5,11 +5,13 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/rand"
 
 	"github.com/adrianmoya/graphql-go-practice/graph/generated"
 	"github.com/adrianmoya/graphql-go-practice/graph/model"
+	"github.com/adrianmoya/graphql-go-practice/jwt"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
@@ -20,6 +22,16 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	}
 	r.todos = append(r.todos, todo)
 	return todo, nil
+}
+
+func (r *mutationResolver) Login(ctx context.Context, username *string, password *string) (*model.LoginOutput, error) {
+	if *username == "gocommunity" && *password == "endava2021" {
+		token, err := jwt.CreateToken(*username)
+		return &model.LoginOutput{
+			Token: token,
+		}, err
+	}
+	return nil, errors.New("Unauthorized")
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {

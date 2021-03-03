@@ -23,6 +23,11 @@ input NewTodo {
   userId: String!
 }
 
+type LoginOutput {
+  token: String!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  login(username: String, password: String):LoginOutput
 }
