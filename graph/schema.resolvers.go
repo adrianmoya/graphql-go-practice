@@ -37,7 +37,7 @@ func (r *mutationResolver) Login(ctx context.Context, username *string, password
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	user := middleware.ForContext(ctx)
-	if user == nil {
+	if user == "" {
 		return nil, errors.New("Unauthorized")
 	}
 	return r.todos, nil
