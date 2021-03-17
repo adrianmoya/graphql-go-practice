@@ -12,6 +12,7 @@ import (
 	"github.com/adrianmoya/graphql-go-practice/graph/generated"
 	"github.com/adrianmoya/graphql-go-practice/graph/model"
 	"github.com/adrianmoya/graphql-go-practice/jwt"
+	"github.com/adrianmoya/graphql-go-practice/middleware"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
@@ -35,6 +36,10 @@ func (r *mutationResolver) Login(ctx context.Context, username *string, password
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	user := middleware.ForContext(ctx)
+	if user == nil {
+		return nil, errors.New("Unauthorized")
+	}
 	return r.todos, nil
 }
 
